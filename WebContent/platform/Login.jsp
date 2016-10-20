@@ -34,6 +34,7 @@
                 </div>
                 <div class="form-group">
                  	<select class="form-control" id="loginRole">
+                 		<option value="Administrator">Administrator</option>
                     	<option value="Student">Student</option>
                         <option value="Staff">Staff</option>
                         <option value="Assoc">Assoc</option>

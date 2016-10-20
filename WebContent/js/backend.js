@@ -14,12 +14,12 @@ $(document).ready(function(){
         }, function(responseText) {
                 console.log(responseText);
                 // do login check here
-        		/*if(responseText){
+        		if(responseText!="fail"){
         			window.location.href = "index.html";
         			$("#loginAlert").hide();
         		}else{
         			$("#loginAlert").show();
-        		}*/
+        		}
         });
 });
 
