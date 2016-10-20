@@ -1,0 +1,28 @@
+body{
+	background-color: #f1f3f6; 
+}
+
+.pointer{
+	cursor:pointer;
+}
+
+.mainIcon img{
+	width:130px;
+	margin-top:1px;
+	margin-left:30px;
+}
+
+/* Login page */
+#login #loginLogo{
+	width:150px;
+}
+
+/* customer */
+.orderDetailsImg{
+	width:100%;
+}
+
+/* supplier */
+#supplier #brandingIcon{
+	width:150px;
+}

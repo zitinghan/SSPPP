@@ -1,0 +1,62 @@
+body {
+    padding-top: 70px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+}
+
+
+
+
+#productListingContainer{
+	padding:10px 0;
+}
+
+.mainIcon{
+	padding-right:20px;
+}
+.mainIcon img{
+	width:130px;
+	margin-top:1px;
+}
+
+.leftNav a img{
+	height:60px;
+}
+
+.leftNav a{
+	text-align: center;
+}
+
+
+/* main page*/
+#main{
+
+}
+
+#main .brandLogo{
+	h1eight:100px;
+}
+
+#main .brandLogo img{
+	height:60px;
+}
+
+#main .pupularItemCarousel img{
+	height:300px;
+	width:100%;
+}
+
+#main .slide-image {
+    width: 70%;
+    height:400px!important;
+    margin:auto;
+}
+
+
+/* product Page */
+.productCaption{
+	padding:10px;
+}
+
+/*product info page*/
+.productInfoCarousel .slide-image{
+	margin:auto;
+}
