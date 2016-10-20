@@ -39,7 +39,9 @@ public class LoginServlet extends HttpServlet{
 	
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		
+		int x = 0;
+		
 		String userName = request.getParameter("userName").trim();
 		String password = request.getParameter("password").trim();
 		String role = request.getParameter("role").trim();
@@ -48,6 +50,9 @@ public class LoginServlet extends HttpServlet{
 		}
 		
 		try {
+			
+			
+			
 			DB db = new DB();
 			con = db.getConnection();
 			
@@ -59,8 +64,9 @@ public class LoginServlet extends HttpServlet{
 			pstmt.setString(3,role);
 			ResultSet rs = pstmt.executeQuery();  
 			
-			int x = 0;
+			
 			  while (rs.next()) {
+				  
 			      if (rs.getString(1).equals(userName) && rs.getString(2).equals(password) && rs.getString(3).equals("Administrator")  ) {
 			          x = 1;
 			          System.out.println(x); }
@@ -79,18 +85,19 @@ public class LoginServlet extends HttpServlet{
 			      }
 			  }
 
-			System.out.println("Exception in BookDBAO: " + rs);
-			
 		} catch (Exception ex) {
 			System.out.println("Exception in BookDBAO: " + ex);
 			
 		}
-		
-		
-		String greetings = "Hello " + userName;
-		
+
 		response.setContentType("text/plain");
-		response.getWriter().write(greetings);
+		if(x == 0){
+			response.getWriter().write("fail");
+		}else{
+			response.getWriter().write("success");
+		}
+		
+		
 	}
 
 
