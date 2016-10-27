@@ -37,7 +37,6 @@
                  		<option value="Administrator">Administrator</option>
                     	<option value="Student">Student</option>
                         <option value="Staff">Staff</option>
-                        <option value="Assoc">Assoc</option>
                         <option value="Supplier">Supplier</option>
                     </select>
                 </div>

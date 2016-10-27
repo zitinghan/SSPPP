@@ -47,3 +47,8 @@ var customer = {
 		}
 	},
 }
+
+$(document).ready(function(){
+	
+});
+

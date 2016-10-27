@@ -171,8 +171,9 @@
                                     </div>
                                     <!-- Listing -->
                                     <div class="panel-body">
-                                       <form role="form">
-                                           
+                                       <form role="form" id="productEditForm">
+                                       		<input type="hidden" name="mode" value="edit" />
+                                           	<input type="hidden" name="productID" id="productID" value="" />
                                             <div class="form-group">
                                                 <label>Model Name</label>
                                                 <input class="form-control" placeholder="Model Name" name="model">
@@ -217,12 +218,13 @@
                                                     <input type="radio" name="display" id="display_close" value="close">Close
                                                 </label>
                                             </div>
-                                            <div class="text-right">
-                                                <button type="submit" class="btn btn-default">
+                                            
+                                        </form>
+                                        <div class="text-right">
+                                                <button id="productEditBtn" class="btn btn-default">
                                                     Submit <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
                                                 </button>
                                             </div>
-                                        </form>
                                     </div>
                                     <!-- /Edit Panel -->
                                 </div>

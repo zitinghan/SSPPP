@@ -15,7 +15,14 @@ $(document).ready(function(){
                 console.log(responseText);
                 // do login check here
         		if(responseText!="fail"){
-        			window.location.href = "index.html";
+        			if(role=='Administrator'){
+        				window.location.href = "admin/index.html";
+        			}else if(role=='Supplier'){
+        				window.location.href = "supplier/index.html";
+        			}else{
+        				window.location.href = "customer.html";
+        			}
+        			
         			$("#loginAlert").hide();
         		}else{
         			$("#loginAlert").show();

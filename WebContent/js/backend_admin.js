@@ -2,7 +2,13 @@ $(document).ready(function() {
     $('#dataTables-example').DataTable({
         responsive: true
     });
-
+    
+    $('#productEditBtn').click(function(){
+    	$.post( "../../AdminServlet", $( "#productEditForm" ).serialize() )
+    	.done(function(data){
+    		console.log(data);
+    	});
+    });
 
 });
 
@@ -20,7 +26,7 @@ var supplier = {
 
 
 //Flot Pie Chart
-$(function() {
+/*$(function() {
 
     var data = [{
         label: "Series 0",
@@ -107,4 +113,6 @@ $(document).ready(function() {
             }],
             options);
     }
-});
+
+    
+});*/
