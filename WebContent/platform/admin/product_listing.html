@@ -42,6 +42,16 @@
 
 <body id="supplier">
 
+		<div class="alert alert-danger alert-dismissible" role="alert" id="editFailAlert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <strong>Warning!</strong> Authentication Failed
+        </div>
+        
+        <div class="alert alert-success alert-dismissible" role="alert" id="editSuccessAlert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <strong>Success!</strong> Edit / Add new data successful
+        </div>
+
     <div id="wrapper">
 
         <!-- Navigation -->
@@ -124,7 +134,7 @@
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody id="listingTable">
                                                 <tr>
                                                     <td>00001</td>
                                                     <td>Switch Alpha 12</td>
@@ -177,6 +187,18 @@
                                             <div class="form-group">
                                                 <label>Model Name</label>
                                                 <input class="form-control" placeholder="Model Name" name="model">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Brand</label>
+                                                <select class="form-control" name="brand">
+                                                    <option value="Acer">Acer</option>
+                                                    <option value="Apple">Apple</option>
+                                                    <option value="Asus">Asus</option>
+                                                    <option value="Dell">Dell</option>
+                                                    <option value="HP">HP</option>
+                                                    <option value="Lenovo">Lenovo</option>
+                                                    <option value="Microsoft">Microsoft</option>
+                                                </select>
                                             </div>
                                             <div class="form-group">
                                                 <label>Category</label>

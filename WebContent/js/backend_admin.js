@@ -1,4 +1,8 @@
 $(document).ready(function() {
+	
+	$("#editFailAlert").hide();
+	$("#editSuccessAlert").hide();
+	
     $('#dataTables-example').DataTable({
         responsive: true
     });
@@ -7,9 +11,43 @@ $(document).ready(function() {
     	$.post( "../../AdminServlet", $( "#productEditForm" ).serialize() )
     	.done(function(data){
     		console.log(data);
+    		if(data==true){
+    			$("#editSuccessAlert").show();
+    		}
     	});
     });
-
+    
+    $.get('../../AdminServlet', {
+        mode : 'getAllProductListing'
+	}, function(responseText) {
+		var data = responseText.Datasets;	
+		var html = '';
+		for(var i=0; i<data.length;i++){
+			var displayClass = '';
+			if(data[i].display=='public'){
+				displayClass = "success";
+			}else{
+				displayClass = "warning";
+			}
+			
+			html += "<tr>";
+			html += '<td>'+data[i].id+'</td>';
+			html += '<td>'+data[i].model+'</td>';
+			html += '<td>Category '+data[i].category+'</td>';
+			html += '<td>'+parseFloat(data[i].price).toFixed(2)+'</td>';
+			html += '<td>'+data[i].create_date+'</td>';
+			html += '<td class="text-center"><span class="label label-'+displayClass+'">'+titleCase(data[i].display)+'</span></td>';
+			html += '<td class="text-center"><a class="pointer" onclick="supplier.editProduct()"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a></td>';
+			html += "</tr>";
+		}
+		$("#listingTable").append(html);
+        console.log(responseText);
+        //console.log(html);
+	});
+    
+    function titleCase(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
 });
 
 var supplier = {
