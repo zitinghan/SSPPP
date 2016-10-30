@@ -3,16 +3,15 @@ $(document).ready(function() {
 	$("#editFailAlert").hide();
 	$("#editSuccessAlert").hide();
 	
-    $('#dataTables-example').DataTable({
-        responsive: true
-    });
-    
     $('#productEditBtn').click(function(){
     	$.post( "../../AdminServlet", $( "#productEditForm" ).serialize() )
     	.done(function(data){
     		console.log(data);
-    		if(data==true){
+    		if(data){
     			$("#editSuccessAlert").show();
+    			setTimeout(function(){
+    				$("#editSuccessAlert").hide();
+				}, 3000);
     		}
     	});
     });
@@ -35,14 +34,18 @@ $(document).ready(function() {
 			html += '<td>'+data[i].model+'</td>';
 			html += '<td>Category '+data[i].category+'</td>';
 			html += '<td>'+parseFloat(data[i].price).toFixed(2)+'</td>';
-			html += '<td>'+data[i].create_date+'</td>';
+			html += '<td>'+data[i].update_time+'</td>';
 			html += '<td class="text-center"><span class="label label-'+displayClass+'">'+titleCase(data[i].display)+'</span></td>';
-			html += '<td class="text-center"><a class="pointer" onclick="supplier.editProduct()"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a></td>';
+			html += '<td class="text-center"><a class="pointer" onclick="supplier.editProduct('+data[i].id+')"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a></td>';
 			html += "</tr>";
 		}
 		$("#listingTable").append(html);
-        console.log(responseText);
-        //console.log(html);
+		$('#dataTables-example').DataTable({
+	        responsive: true
+	    });
+
+       
+        
 	});
     
     function titleCase(string) {
@@ -51,14 +54,50 @@ $(document).ready(function() {
 });
 
 var supplier = {
-    editProduct: function(id){
+    
+	editProduct: function(id){
+
+    	if(id){
+    		$("#actionMode").text("Edit");
+    		$.get('../../AdminServlet', {
+                mode : 'getSelectedProductDetails',
+                id : id,
+        	}, function(responseText) {
+        		$("#productID").val(responseText.id);
+        		$.each( responseText, function( key, value ) {
+        			if(key=="display"){
+        				$("input[name=display][value='"+value+"']").prop("checked",true);
+        			}else if(key=="specs"){
+        				var obj = JSON.parse(value);
+        				for(var i in obj){
+        					$( '#' + i ).val( obj[i] );
+        				}
+        			}else if(key=="imageUrl"){
+        				
+        				var images = value.split(',');
+        				for(var i in images){
+        					var id = parseInt(i) + 1;
+        					$("#image_"+id).val(images[i]);
+        					
+        				}
+        			}else{
+        				$( '#' + key ).val( value ); 
+        			}
+        		});
+        	});
+    	}else{
+    		$("#actionMode").text("New");
+    	}
+    	
         $("#productListing").removeClass('show').addClass('hide');
         $("#productEdit").removeClass('hide').addClass('show');
     },
 
     backToListing:function(){
+    	/*$('#productEditForm').trigger("reset");
         $("#productEdit").removeClass('show').addClass('hide');
-        $("#productListing").removeClass('hide').addClass('show');
+        $("#productListing").removeClass('hide').addClass('show');*/
+    	location.reload();
     },
 };
 

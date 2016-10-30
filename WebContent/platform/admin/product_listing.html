@@ -129,33 +129,12 @@
                                                     <th>Model</th>
                                                     <th>Category</th>
                                                     <th>Price S$</th>
-                                                    <th>Created Date</th>
+                                                    <th>Update Date</th>
                                                     <th>Status</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
-                                            <tbody id="listingTable">
-                                                <tr>
-                                                    <td>00001</td>
-                                                    <td>Switch Alpha 12</td>
-                                                    <td>Category 2</td>
-                                                    <td>1284</td>
-                                                    <td>13/10/2016</td>
-                                                    <td class="text-center"><span class="label label-success">Public</span></td>
-                                                    <td class="text-center"><a class="pointer" onclick="supplier.editProduct()"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a></td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td>00002</td>
-                                                    <td>TravelMate P238 (i5)</td>
-                                                    <td>Category 3</td>
-                                                    <td>995.10</td>
-                                                    <td>14/10/2016</td>
-                                                    <td class="text-center"><span class="label label-warning">Pending</span></td>
-                                                    <td class="text-center"><a href=""><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a></td>
-                                                </tr>
-                                                
-                                            </tbody>
+                                            <tbody id="listingTable"></tbody>
                                         </table>
                                     </div>
                                     <!-- /listing -->
@@ -169,7 +148,7 @@
                                     <div class="panel-heading">
                                         <div class="row">
 
-                                            <div class="col-xs-6 text-left"><h4>Edit Product</h4></div>
+                                            <div class="col-xs-6 text-left"><h4><span id="actionMode"></span> Product</h4></div>
                                             <div class="col-xs-6 text-right">
                                                 
                                                 <button type="button" class="btn btn-default" onclick="supplier.backToListing()">
@@ -186,11 +165,11 @@
                                            	<input type="hidden" name="productID" id="productID" value="" />
                                             <div class="form-group">
                                                 <label>Model Name</label>
-                                                <input class="form-control" placeholder="Model Name" name="model">
+                                                <input class="form-control" placeholder="Model Name" name="model" id="model">
                                             </div>
                                             <div class="form-group">
                                                 <label>Brand</label>
-                                                <select class="form-control" name="brand">
+                                                <select class="form-control" name="brand" id="brand">
                                                     <option value="Acer">Acer</option>
                                                     <option value="Apple">Apple</option>
                                                     <option value="Asus">Asus</option>
@@ -202,7 +181,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label>Category</label>
-                                                <select class="form-control" name="category">
+                                                <select class="form-control" name="category" id="category">
                                                     <option value="1">Tablet</option>
                                                     <option value="2">Laptop 2</option>
                                                     <option value="3">Laptop 3</option>
@@ -213,20 +192,101 @@
                                             </div>
                                             <div class="form-group">
                                                 <label>Price S$ (w/Gst)</label>
-                                                <input class="form-control" placeholder="Price" name="price">
+                                                <input class="form-control" placeholder="Price" name="price" id="price">
                                             </div>
                                             <div class="form-group">
                                                 <label>Description</label>
-                                                <textarea class="form-control" rows="3" name="desc"></textarea>
+                                                <textarea class="form-control" rows="3" name="product_desc" id="product_desc"></textarea>
                                             </div>
-                                            <div class="form-group">
+                                            <div class="form-group" id="imageWrapper">
                                                 <label>Image Url</label>
-                                                <input class="form-control" placeholder="Image Url" name="imageUrl">
+                                                <!-- <span class="glyphicon glyphicon-plus pointer" id="addImageBtn" aria-hidden="true" style="float:right"></span> -->
+                                                <input class="form-control marginTop10" placeholder="Image Url" name="imageUrl" id="image_1">
+                                                <input class="form-control marginTop10" placeholder="Image Url" name="imageUrl" id="image_2">
+                                                <input class="form-control marginTop10" placeholder="Image Url" name="imageUrl" id="image_3">
                                             </div>
                                             <!-- <div class="form-group">
                                                 <label>File input</label>
                                                 <input type="file">
                                             </div> -->
+                                            
+                                            <label>Specification</label>
+                                            <table class="table">
+                                            	<tr>
+                                            		<td>Processor</td>
+                                            		<td><input class="form-control" placeholder="Processor" name="processor" id="specs_processor"></td>
+                                            	</tr>
+                                            	<tr>
+                                            		<td>Chipset</td>
+                                            		<td><input class="form-control" placeholder="Chipset" name="chipset" id="specs_chipset"></td>
+                                            	</tr>
+                                            	<tr>
+                                            		<td>Memory</td>
+                                            		<td><input class="form-control" placeholder="Memory" name="memory" id="specs_memory"></td>
+                                            	</tr>
+                                            	<tr>
+                                            		<td>Hard Disk Drive</td>
+                                            		<td><input class="form-control" placeholder="Hard Disk Drive" name="harddiskdrive" id="specs_harddiskdrive"></td>
+                                            	</tr>
+                                            	<tr>
+                                            		<td>Display</td>
+                                            		<td><input class="form-control" placeholder="Display" name="sdisplay" id="specs_sdisplay"></td>
+                                            	</tr>
+                                            	<tr>
+                                            		<td>Graphics</td>
+                                            		<td><input class="form-control" placeholder="Graphics" name="graphics" id="specs_graphics"></td>
+                                            	</tr>
+                                            	<tr>
+                                            		<td>Communication</td>
+                                            		<td><input class="form-control" placeholder="Communication" name="communication" id="specs_communication"></td>
+                                            	</tr>
+                                            	<tr>
+                                            		<td>Optical Drive</td>
+                                            		<td><input class="form-control" placeholder="Optical Drive" name="opticaldrive" id="specs_opticaldrive"></td>
+                                            	</tr>
+                                            	<tr>
+                                            		<td>I/O Interface</td>
+                                            		<td><input class="form-control" placeholder="I/O Interface" name="iointerface" id="specs_iointerface"></td>
+                                            	</tr>
+                                            	<tr>
+                                            		<td>Audio</td>
+                                            		<td><input class="form-control" placeholder="Audio" name="audio" id="specs_audio"></td>
+                                            	</tr>
+                                            	<tr>
+                                            		<td>Operating System</td>
+                                            		<td><input class="form-control" placeholder="Operating System" name="operatingsystem" id="specs_operatingsystem"></td>
+                                            	</tr>
+                                            	<tr>
+                                            		<td>Additional Software</td>
+                                            		<td><input class="form-control" placeholder="Additional Software" name="additionalsoftware" id="specs_additionalsoftware"></td>
+                                            	</tr>
+                                            	<tr>
+                                            		<td>Mouse/Pointer</td>
+                                            		<td><input class="form-control" placeholder="Mouse/Pointer" name="mousepointer" id="specs_mousepointer"></td>
+                                            	</tr>
+                                            	<tr>
+                                            		<td>Other</td>
+                                            		<td><input class="form-control" placeholder="Other" name="other" id="specs_other"></td>
+                                            	</tr>
+                                            	<tr>
+                                            		<td>Warranty</td>
+                                            		<td><input class="form-control" placeholder="Warranty" name="warranty" id="specs_warranty"></td>
+                                            	</tr>
+                                            	<tr>
+                                            		<td>Weight & Battery</td>
+                                            		<td><input class="form-control" placeholder="Weight & Battery" name="weightbattery" id="specs_weightbattery"></td>
+                                            	</tr>
+                                            	<tr>
+                                            		<td>Supplier</td>
+                                            		<td><input class="form-control" placeholder="Supplier" name="supplier" id="specs_supplier"></td>
+                                            	</tr>
+                                            	
+                                            </table>
+                                            
+                                            <div class="form-group">
+                                                <label>Others</label>
+                                                <textarea class="form-control" rows="5" name="others_desc" id="others_desc"></textarea>
+                                            </div>
                                             
                                             <div class="form-group">
                                                 <label>Display</label>
