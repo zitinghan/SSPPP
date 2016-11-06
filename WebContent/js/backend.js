@@ -2,7 +2,6 @@ $(document).ready(function(){
 	$("#name").text('here');
 	
 	$("#loginAlert").hide();
-
 	
 	// submit login 
 	$('#submitLogin').click(function(event) {
@@ -10,7 +9,7 @@ $(document).ready(function(){
         var password = $('#loginPassword').val();
         var role = $('#loginRole').val();
         $.get('../LoginServlet', {
-                userName : id, password: password, role: role
+                userName : id, password: password, role: role, mode: "login"
         }, function(responseText) {
                 console.log(responseText);
                 // do login check here
@@ -18,7 +17,7 @@ $(document).ready(function(){
         			if(role=='Administrator'){
         				window.location.href = "admin/index.html";
         			}else if(role=='Supplier'){
-        				window.location.href = "supplier/index.html";
+        				window.location.href = "admin/index.html";
         			}else{
         				window.location.href = "customer.html";
         			}
@@ -28,9 +27,21 @@ $(document).ready(function(){
         			$("#loginAlert").show();
         		}
         });
-});
+	});
 
+	$('#logout').click(function(event) {
+       
+        $.get('../../LogoutServlet', function(responseText) {
+            console.log(responseText);
+            window.location.href = "../Login.jsp";
+        });
+	});
 	
+	$('#checkSession').click(function(event) {
+        $.get('../LoginServlet', {mode:"checkSession"} , function(responseText) {
+            console.log(responseText);
+        });
+	});
 });
 
 

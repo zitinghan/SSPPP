@@ -19,6 +19,7 @@
       <div class="modal-content">
       	
           <div class="modal-header">
+          
               <h1>
               	<img src="../images/icon.png" alt="NTU logo" id="loginLogo" />
                 Login SSPPP Portal
@@ -43,7 +44,8 @@
                 <div class="form-group">
                   <button class="btn btn-primary btn-lg btn-block" id="submitLogin">Sign In</button>
                   <br/>
-                  <span class="pull-right"><a href="#">Forget Password</a></span>
+                  <!-- <span class="pull-right"><a href="#">Forget Password</a></span> -->
+                  <div id="checkSession">check session</div>
                 </div>
   
           </div>

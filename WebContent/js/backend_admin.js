@@ -1,5 +1,7 @@
 $(document).ready(function() {
 	
+	checkSession();
+	
 	$("#editFailAlert").hide();
 	$("#editSuccessAlert").hide();
 	
@@ -50,6 +52,16 @@ $(document).ready(function() {
     
     function titleCase(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+    
+    function checkSession(){
+    	$.get('../../LoginServlet', {mode:"checkSession"} , function(responseText) {
+            console.log(responseText);
+            if(responseText=="false"){
+            	window.location.href = "../Login.jsp";
+            }
+
+        });
     }
 });
 
