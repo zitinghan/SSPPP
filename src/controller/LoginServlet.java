@@ -55,12 +55,12 @@ public class LoginServlet extends HttpServlet{
 			
 			if(mode.equals("checkSession")){
 				
-				Enumeration<String> keys = session.getAttributeNames();
+				/*Enumeration<String> keys = session.getAttributeNames();
 			  	  while (keys.hasMoreElements())
 			  	  {
 			  	    String key = (String)keys.nextElement();
 			  	    System.out.println(key + ": " + session.getAttribute(key) + "<br>");
-			  	  }
+			  	  }*/
 			  	  
 			  	if(session.getAttribute("username") != null){
 			  		response.getWriter().write("true");
@@ -102,8 +102,8 @@ public class LoginServlet extends HttpServlet{
 				      if(x!=4){
 				         session.setAttribute("username", userName);
 				         session.setAttribute("userbrand", rs.getString(4));
-				         System.out.println("username"+userName);
-				         System.out.println(rs.getString(4));
+				         //System.out.println("username"+userName);
+				         //System.out.println(rs.getString(4));
 				      }
 				 }
 				

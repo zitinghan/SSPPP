@@ -1,20 +1,19 @@
 package controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
@@ -44,16 +43,38 @@ public class AdminServlet extends HttpServlet {
 		JSONArray dataSets = new JSONArray();
 		JSONObject dataSet;
 		
+		HttpSession session = request.getSession(false);
+		
 		DB db;
 		try {
 			db = new DB();
 			con = db.getConnection();
 			
 			if(mode.equals("getAllProductListing")){
-				String sqlStr = "select * from product";
-			    PreparedStatement pstmt = con.prepareStatement(sqlStr);
-				ResultSet rs = pstmt.executeQuery();
 				
+				String userbrand = (String) session.getAttribute("userbrand");
+				String username = (String) session.getAttribute("username");
+				String sqlStr = "";
+				
+
+				System.out.println("hereb" + userbrand);
+				System.out.println("heren" + username);
+				
+				ResultSet rs;
+				PreparedStatement pstmt;
+				
+				if(userbrand != null){
+					System.out.println(userbrand);
+					sqlStr = "select * from product where brand=?";
+					pstmt = con.prepareStatement(sqlStr);
+				    pstmt.setString(1,userbrand);
+				    rs = pstmt.executeQuery();
+				}else{
+					sqlStr = "select * from product";
+					pstmt = con.prepareStatement(sqlStr);
+					rs = pstmt.executeQuery();
+				}
+
 				while(rs.next()){
 					dataSet = new JSONObject();
 					dataSet.put("id", rs.getString("id"));

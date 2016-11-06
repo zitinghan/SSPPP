@@ -36,12 +36,12 @@ public class LogoutServlet extends HttpServlet {
         PrintWriter out=response.getWriter();  
 		HttpSession session=request.getSession();  
         
-        Enumeration<String> keys = session.getAttributeNames();
+        /*Enumeration<String> keys = session.getAttributeNames();
 	  	  while (keys.hasMoreElements())
 	  	  {
 	  	    String key = (String)keys.nextElement();
 	  	    System.out.println(key + ": " + session.getAttribute(key) + "<br>");
-	  	  }
+	  	  }*/
 	  	 
 	  	session.invalidate();  
         out.print("You are successfully logged out!");  
