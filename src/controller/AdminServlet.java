@@ -53,18 +53,12 @@ public class AdminServlet extends HttpServlet {
 			if(mode.equals("getAllProductListing")){
 				
 				String userbrand = (String) session.getAttribute("userbrand");
-				String username = (String) session.getAttribute("username");
 				String sqlStr = "";
-				
-
-				System.out.println("hereb" + userbrand);
-				System.out.println("heren" + username);
 				
 				ResultSet rs;
 				PreparedStatement pstmt;
 				
 				if(userbrand != null){
-					System.out.println(userbrand);
 					sqlStr = "select * from product where brand=?";
 					pstmt = con.prepareStatement(sqlStr);
 				    pstmt.setString(1,userbrand);
