@@ -57,6 +57,10 @@ body {
 }
 
 /*product info page*/
+.carousel-inner{
+	height:400px
+}
 .productInfoCarousel .slide-image{
 	margin:auto;
+	height:400px;
 }

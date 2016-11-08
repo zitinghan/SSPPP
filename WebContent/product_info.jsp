@@ -1,4 +1,7 @@
     <%@ include file="header.html" %>   
+    <%@page import="java.sql.*"%>    
+	<%@page import="database.*" %>
+	<%@page import="org.json.*" %>
 
     <div class="container">
 
@@ -6,45 +9,70 @@
              <div class="col-md-3"><!-- left nav -->
                 <p class="lead">Categories</p>
                 <div class="list-group">
-                    <a href="#" class="list-group-item">Tablet</a>
-                    <a href="#" class="list-group-item">Laptop</a>
-                    <a href="#" class="list-group-item">Desktop</a>
+                    <a href="product_listing.jsp?category=1" class="list-group-item">Tablet</a>
+                    <a href="product_listing.jsp?category=2" class="list-group-item">Laptop</a>
+                    <a href="product_listing.jsp?category=6" class="list-group-item">Desktop</a>
                 </div>
 
                 <p class="lead">Brand</p>
                 <div class="list-group leftNav">
-                    <a href="#" class="list-group-item">
+                    <a href="product_listing.jsp?brand=Acer" class="list-group-item">
                         <img src="images/brand/logo.svg" alt="" />
                     </a>
 
-                    <a href="#" class="list-group-item">
+                    <a href="product_listing.jsp?brand=Apple" class="list-group-item">
                         <img src="images/brand/Apple-logo-grey.png" alt="" />
                     </a>
 
-                    <a href="#" class="list-group-item">
+                    <a href="product_listing.jsp?brand=Asus" class="list-group-item">
                         <img src="images/brand/LogoAsus.png" alt="" />
                     </a>
 
-                    <a href="#" class="list-group-item">
+                    <a href="product_listing.jsp?brand=Dell" class="list-group-item">
                         <img src="images/brand/Dell_Logo.svg.png" alt="" />
                     </a>
 
-                    <a href="#" class="list-group-item">
+                    <a href="product_listing.jsp?brand=HP" class="list-group-item">
                         <img src="images/brand/HP_New_Logo_2D.svg.png" alt="" />
                     </a>
 
-                    <a href="#" class="list-group-item">
+                    <a href="product_listing.jsp?brand=Lenovo" class="list-group-item">
                         <img src="images/brand/Lenovo-Logos.jpg" alt="" />
                     </a>
 
-                    <a href="#" class="list-group-item">
+                    <a href="product_listing.jsp?brand=Microsoft" class="list-group-item">
                         <img src="images/brand/Microsoft-Logo-PNG.png" alt="" />
                     </a>
                     
                 </div>
-            </div><!-- left nav --> 
+            </div><!-- left nav -->
 
             <div class="col-md-9"><!-- right Container -->
+            
+            	<jsp:useBean id="homeClass" class="controller.HomeServlet"/>
+               	<%
+	                try{
+		                Connection con;
+		            	DB db = new DB();
+		            	con = db.getConnection();
+		            	
+		            	String id = request.getParameter("id");
+		            	String sqlStr = "select * from product where id = '"+id+"'";
+		            	
+		    			PreparedStatement pstmt = con.prepareStatement(sqlStr);
+		    			ResultSet rs = pstmt.executeQuery();
+		    			
+		    			String model,price,desc,others_desc;
+		    			JSONObject specsJson;
+		    			
+		    			while(rs.next()) {
+		    				price = rs.getString("price");
+		    				model = rs.getString("model");
+		    				desc = rs.getString("product_desc");
+		    				others_desc = rs.getString("others_desc");
+		    				
+		    				specsJson = new JSONObject(rs.getString("specs").toString());
+                %>
 
                 <div class="thumbnail">
                     <div class="carousel-holder">
@@ -55,15 +83,7 @@
                                 <li data-target="#carousel-example-generic" data-slide-to="2"></li>
                             </ol>
                             <div class="carousel-inner productInfoCarousel">
-                                <div class="item active">
-                                    <img class="slide-image" src="images/popular/1.jpeg" alt="">
-                                </div>
-                                <div class="item">
-                                    <img class="slide-image" src="images/popular/2.jpg" alt="">
-                                </div>
-                                <div class="item">
-                                    <img class="slide-image" src="images/popular/3.jpg" alt="">
-                                </div>
+                                <%=homeClass.getSliderInfoImage(rs.getString("imageUrl"), model) %>
                             </div>
                             <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
                                 <span class="glyphicon glyphicon-chevron-left"></span>
@@ -75,17 +95,11 @@
                     </div>
 
                     <div class="productCaption">
-                        <h4 class="pull-right">S$537.14 (w GST)</h4>
-                        <h4><a href="#">Apple iPad Mini 4 32GB Wifi</a></h4>
-                        <div class="text-right"><button type="button" class="btn btn-success">Order Now <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></div>
+                        <h4 class="pull-right">S$<%=price %> (w GST)</h4>
+                        <h4><%=model %></h4>
+                        <div class="text-right"><button type="button" class="btn btn-success" onclick="orderAction(<%=id%>)">Order Now <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></div>
                         <p>
-                            on September 7, 2016, Apple gave a storage boost to its lineup of iPads, increasing the base capacity of the iPad Air 2, iPad Mini 4 and iPad Mini 2 from 16GB to 32GB. Though the company discontinued the 64GB edition of the iPad Mini 4, the 128GB version remains available and is now $100 cheaper than before ($499 without cellular connectivity and $629 with it).
-                            <br/><br/>
-                            The iPad Mini 4 is a tinier, slightly less powerful iPad Air 2. That's basically all you need to know about this tablet, the 7.9-inch screen model which has been available since October 2015. I started sitting down the Mini 4 again, carrying it around every day in my bag, reading books -- even using it to do work. This, after using Apple's 9.7-inch iPad Pro as my general new go-to tablet. I even wrote this review on it. Which...wasn't fun.
-                            <br/><br/>
-                            In a world of larger phones and more-capable hybrid laptops and tablets, the iPad Mini feels less relevant than it used to. And while it's the best of Apple's small iPads, with a still-really-nice design, it's not the tablet I'd choose to carry around anymore. And Apple's iPad pricing no longer favors it.
-                            <br/><br/>
-                            Since I first reviewed it last year, Apple has adjusted the pricing in its iPad line, pitting the iPad Air 2 as an identically priced alternative. And with that value change in mind, I wanted to ask the question: Is the Mini 4 a tablet you should still consider? 
+                            <%=desc %>
                         </p>
                     
                         <div class="ratings">
@@ -116,51 +130,71 @@
                             <table class="table table-hover">
                                 <tr>
                                     <td>Processor</td>
-                                    <td>A8 chip with 64-bit architecture and M8 motion coprocessor</td>
+                                    <td><%=specsJson.getString("specs_processor") %></td>
+                                </tr>
+                                <tr>
+                                    <td>Chipset</td>
+                                    <td><%=specsJson.getString("specs_chipset") %></td>
+                                </tr>
+                                <tr>
+                                    <td>RAM</td>
+                                    <td><%=specsJson.getString("specs_memory") %></td>
                                 </tr>
                                 <tr>
                                     <td>Hard Disk Drive</td>
-                                    <td>32GB</td>
+                                    <td><%=specsJson.getString("specs_harddiskdrive") %></td>
                                 </tr>
                                 <tr>
                                     <td>Display</td>
-                                    <td>7.9" LED 2048x1536</td>
+                                    <td><%=specsJson.getString("specs_sdisplay") %></td>
+                                </tr>
+                                <tr>
+                                    <td>Graphics</td>
+                                    <td><%=specsJson.getString("specs_graphics") %></td>
                                 </tr>
                                 <tr>
                                     <td>Communication</td>
-                                    <td>Wireless 802.11 a/b/g/n, Bluetooth 4.0</td>
+                                    <td><%=specsJson.getString("specs_communication") %></td>
+                                </tr>
+                                <tr>
+                                    <td>Optical Drive</td>
+                                    <td><%=specsJson.getString("specs_opticaldrive") %></td>
                                 </tr>
                                 <tr>
                                     <td>I/O Interface</td>
-                                    <td>1 x Lightning port, Fingerprint identity sensor</td>
+                                    <td><%=specsJson.getString("specs_iointerface") %></td>
                                 </tr>
                                 <tr>
                                     <td>Audio</td>
-                                    <td>Integrated</td>
+                                    <td><%=specsJson.getString("specs_audio") %></td>
                                 </tr>
                                 <tr>
                                     <td>Operating System</td>
-                                    <td>iOS 9</td>
+                                    <td><%=specsJson.getString("specs_operatingsystem") %></td>
+                                </tr>
+                                <tr>
+                                    <td>Additional Software</td>
+                                    <td><%=specsJson.getString("specs_additionalsoftware") %></td>
                                 </tr>
                                 <tr>
                                     <td>Mouse/Pointer</td>
-                                    <td>Multitouch screen</td>
+                                    <td><%=specsJson.getString("specs_mousepointer") %></td>
                                 </tr>
                                 <tr>
                                     <td>Other</td>
-                                    <td>Bundled with Book case and Screen Protector (Anti-Glare)</td>
+                                    <td><%=specsJson.getString("specs_other") %></td>
                                 </tr>
                                 <tr>
                                     <td>Warranty</td>
-                                    <td>1 Year Local Warranty (including parts and labor) </td>
+                                    <td><%=specsJson.getString("specs_warranty") %></td>
                                 </tr>
                                 <tr>
                                     <td>Weight & Battery</td>
-                                    <td>331g</td>
+                                    <td><%=specsJson.getString("specs_weightbattery") %></td>
                                 </tr>
                                 <tr>
                                     <td>Supplier</td>
-                                    <td>Newstead Technologies</td>
+                                    <td><%=specsJson.getString("specs_supplier") %></td>
                                 </tr>
                             </table>
                           </div>
@@ -176,7 +210,7 @@
                         </div>
                         <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                           <div class="panel-body">
-                            <table class="table table-hover">
+                            <!-- <table class="table table-hover">
                                 <tr>
                                     <td>iPad Mini 4 Wi-Fi 128GB</td>
                                     <td>+ S$136.96</td>
@@ -193,7 +227,8 @@
                                     <td>AppleCare Protection Plan</td>
                                     <td>+ S$96.30</td>
                                 </tr>
-                            </table>
+                            </table> -->
+                            <%=homeClass.getOthersDesc(others_desc) %>
                           </div>
                         </div>
                       </div>
@@ -221,7 +256,18 @@
                     
                 </div>
                 
-                            
+                <%
+		    			}
+		           	rs.close();
+	  	         	pstmt.close();
+	  	         	con.close();
+		  	         	
+		  	      } catch (Exception e) {
+		
+		  			out.println(e.getMessage());
+		  		  } 
+	           	%>
+                
             </div><!-- right Container -->
         </div>
         

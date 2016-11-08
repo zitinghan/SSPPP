@@ -49,6 +49,36 @@ var customer = {
 }
 
 $(document).ready(function(){
-	
+	$.get('../CustomerServlet', {
+        //mode : 'getOrderListing'
+	}, function(responseText) {
+
+		var data = responseText.Datasets;	
+		var html = '';
+		for(var i=0; i<data.length;i++){
+			
+			html += "<tr>";
+			html += '<td>'+(i+1)+'</td>';
+			html += '<td>'+data[i].userid+'</td>';
+			html += '<td>'+data[i].model+'</td>';
+			html += '<td>Category '+data[i].category+'</td>';
+			html += '<td>'+parseFloat(data[i].price).toFixed(2)+'</td>';
+			html += '<td>'+data[i].date+'</td>';
+			
+			if(data[i].status=="Ordered"){
+				displayClass = "info"
+			}else if(data[i].status=="Success"){
+				displayClass = "success"
+			}
+			html += '<td class="text-center"><span class="label label-'+displayClass+'">'+data[i].status+'</span></td>';
+			html += '';
+			html += "</tr>";
+		}
+		$("#customerOrderList").append(html);
+		$('#dataTables-order').DataTable({
+	        responsive: true
+	    });
+	});
+    
 });
 

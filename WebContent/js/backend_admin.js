@@ -45,9 +45,37 @@ $(document).ready(function() {
 		$('#dataTables-example').DataTable({
 	        responsive: true
 	    });
+	});
+    
+    $.get('../../AdminServlet', {
+        mode : 'getOrderListing'
+	}, function(responseText) {
 
-       
-        
+		var data = responseText.Datasets;	
+		var html = '';
+		for(var i=0; i<data.length;i++){
+			
+			html += "<tr>";
+			html += '<td>'+(i+1)+'</td>';
+			html += '<td>'+data[i].userid+'</td>';
+			html += '<td>'+data[i].model+'</td>';
+			html += '<td>Category '+data[i].category+'</td>';
+			html += '<td>'+parseFloat(data[i].price).toFixed(2)+'</td>';
+			html += '<td>'+data[i].date+'</td>';
+			
+			if(data[i].status=="Ordered"){
+				displayClass = "info"
+			}else if(data[i].status=="Success"){
+				displayClass = "success"
+			}
+			html += '<td class="text-center"><span class="label label-'+displayClass+'">'+data[i].status+'</span></td>';
+			html += '';
+			html += "</tr>";
+		}
+		$("#listingOrderTable").append(html);
+		$('#dataTables-order').DataTable({
+	        responsive: true
+	    });
 	});
     
     function titleCase(string) {
@@ -79,6 +107,10 @@ var supplier = {
         		$.each( responseText, function( key, value ) {
         			if(key=="display"){
         				$("input[name=display][value='"+value+"']").prop("checked",true);
+        			}else if(key=="featured"){
+        				if(value=="on"){
+        					$("input[name=featured]").attr('checked',true);
+        				}
         			}else if(key=="specs"){
         				var obj = JSON.parse(value);
         				for(var i in obj){
