@@ -86,7 +86,7 @@
 	            	con = db.getConnection();
 	            	
 	            	
-	    			String sqlStr = "select * from product where featured = 'on' and display = 'public'";
+	    			String sqlStr = "select * from product where featured = 'on' and display = 'public' order by `id` desc limit 3";
 	    			PreparedStatement pstmt = con.prepareStatement(sqlStr);
 	    			ResultSet rs = pstmt.executeQuery();
 	    			

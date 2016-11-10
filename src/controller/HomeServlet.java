@@ -59,7 +59,7 @@ public class HomeServlet extends HttpServlet {
     		}
             html += "<div class='item "+active+"'><img src='"+images[i]+"' alt='"+model+"'></div>";
         }
-
+    	
     	return html;
     }
     
@@ -81,9 +81,12 @@ public class HomeServlet extends HttpServlet {
     
     public String getFirstImage(String imagesUrl, String model){
     	String html = "";
-    	String images[] = imagesUrl.split(",");
-    	String active = "";
-    	html += "<div class='item "+active+"'><img src='"+images[0]+"' alt='"+model+"'></div>";
+    	System.out.println(imagesUrl);
+    	if(imagesUrl!=null){
+    		String images[] = imagesUrl.split(",");
+        	String active = "";
+        	html += "<div class='item productListingImage "+active+"'><img src='"+images[0]+"' alt='"+model+"'></div>";
+    	}
     	return html;
     }
     

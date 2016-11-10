@@ -177,10 +177,7 @@ public class AdminServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		
-		
+
 	}
 
 	/**
@@ -227,12 +224,15 @@ public class AdminServlet extends HttpServlet {
 					int cnt = 0;
 					String longImage = "";
 					for(String value : imageUrl) {
-						if(cnt==0){
-							longImage += value;
-						}else{
-							longImage += ","+value;
+						if(value==null){
+							if(cnt==0){
+								longImage += value;
+							}else{
+								longImage += ","+value;
+							}
+							cnt++;
 						}
-						cnt++;
+						
 				    }
 					
 					// specs detials

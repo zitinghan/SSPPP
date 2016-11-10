@@ -85,7 +85,7 @@ $(document).ready(function() {
     function checkSession(){
     	$.get('../../LoginServlet', {mode:"checkSession"} , function(responseText) {
             console.log(responseText);
-            if(responseText=="false"){
+            if(responseText=="" || responseText=="false"){
             	window.location.href = "../Login.jsp";
             }
 

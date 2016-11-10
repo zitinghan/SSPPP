@@ -44,6 +44,10 @@ body {
 	width:100%;
 }
 
+.productListingImage img{
+	width:100%;
+}
+
 #main .slide-image {
     width: 70%;
     height:400px!important;
