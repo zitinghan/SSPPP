@@ -10,8 +10,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
+import org.json.JSONArray;
 import org.json.JSONException;
 
 import database.DB;
@@ -38,25 +40,32 @@ public class CustomerServlet extends HttpServlet {
 		Connection con;
 		DB db;
 		
+		HttpSession session=request.getSession(); 
+		
 		try{
 			
 			db = new DB();
 			con = db.getConnection();
 			
+			JSONObject json      = new JSONObject();
+			JSONArray dataSets = new JSONArray();
 			JSONObject dataSet;
-			String id = request.getParameter("id").trim();
-			dataSet = new JSONObject();
+			String userID = (String) session.getAttribute("username");
+			
 			
 			String sqlStr = "";
 			
-			sqlStr += "SELECT `order`.id, `order`.userid, `order`.price, product.model, product.category,`order`.status, `order`.date, product.brand, `order`.collected_date";
+			sqlStr += "SELECT `order`.id, `order`.userid, `order`.price, product.model, product.category,`order`.status, `order`.date, product.brand, `order`.collected_date,";
+			sqlStr += " `order`.review_rating, `order`.review_desc, product.imageUrl";
 			sqlStr += " FROM `order` LEFT JOIN product on `order`.model = product.id";
+			sqlStr += " Where `order`.userid = ? order by `order`.create_time desc";
 			
 		    PreparedStatement pstmt = con.prepareStatement(sqlStr);
-		    pstmt.setString(1,id);
+		    pstmt.setString(1,userID);
 			ResultSet rs = pstmt.executeQuery();
 			
 			while(rs.next()){
+				dataSet = new JSONObject();
 				dataSet.put("id", rs.getString("id"));
 				dataSet.put("userid", rs.getString("userid"));
 				dataSet.put("price", rs.getString("price"));
@@ -65,8 +74,14 @@ public class CustomerServlet extends HttpServlet {
 				dataSet.put("status", rs.getString("status"));
 				dataSet.put("date", rs.getString("date"));
 				dataSet.put("brand", rs.getString("brand"));
-				dataSet.put("collected_date", rs.getString("collected_date"));
+				dataSet.put("review_rating", rs.getString("review_rating"));
+				dataSet.put("review_desc", rs.getString("review_desc"));
+				dataSet.put("imageUrl", rs.getString("imageUrl"));
+				//dataSet.put("collected_date", rs.getString("collected_date"));
+				dataSets.put(dataSet);
 	        }
+			
+			json.put("Datasets", dataSets);
 			
 			// Clean-up environment
 	         rs.close();
@@ -74,7 +89,7 @@ public class CustomerServlet extends HttpServlet {
 	         con.close();
 
 	        response.setContentType("application/json");
-	        response.getWriter().write(dataSet.toString());
+	        response.getWriter().write(json.toString());
 
 	        
 			
@@ -90,7 +105,39 @@ public class CustomerServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+		
+		Connection con;
+		DB db;
+		try {
+			db = new DB();
+			con = db.getConnection();
+			
+			String orderID = request.getParameter("id").trim();
+			String review = request.getParameter("review").trim();
+			String review_rating = request.getParameter("review_rating").trim();
+			
+			String sqlStr = "UPDATE `order` SET review_rating=?, review_desc=?, update_time=current_timestamp where id=?";
+
+
+		    PreparedStatement pstmt = con.prepareStatement(sqlStr);
+		    
+		    pstmt.setString(1,review_rating);
+			pstmt.setString(2,review);
+			pstmt.setString(3,orderID);
+
+			pstmt.executeUpdate();
+			response.getWriter().println(true);
+			
+			pstmt.close();
+	        con.close();
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
 	}
 
 }

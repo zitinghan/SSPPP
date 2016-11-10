@@ -37,6 +37,14 @@ $(document).ready(function(){
         });
 	});
 	
+	$('#logoutCustomer').click(function(event) {
+	       
+        $.get('../LogoutServlet', function(responseText) {
+            console.log(responseText);
+            window.location.href = "Login.jsp";
+        });
+	});
+	
 	$('#checkSession').click(function(event) {
         $.get('../LoginServlet', {mode:"checkSession"} , function(responseText) {
             console.log(responseText);

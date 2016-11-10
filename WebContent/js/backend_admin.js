@@ -6,10 +6,10 @@ $(document).ready(function() {
 	$("#editSuccessAlert").hide();
 	
     $('#productEditBtn').click(function(){
-    	console.log($( "#productEditForm" ).serialize());
+    	//console.log($( "#productEditForm" ).serialize());
     	$.post( "../../AdminServlet", $( "#productEditForm" ).serialize() )
     	.done(function(data){
-    		console.log(data);
+    		//console.log(data);
     		if(data){
     			$("#editSuccessAlert").show();
     			setTimeout(function(){
@@ -19,73 +19,112 @@ $(document).ready(function() {
     	});
     });
     
-    $.get('../../AdminServlet', {
-        mode : 'getAllProductListing'
-	}, function(responseText) {
-		var data = responseText.Datasets;	
-		var html = '';
-		for(var i=0; i<data.length;i++){
-			var displayClass = '';
-			if(data[i].display=='public'){
-				displayClass = "success";
-			}else{
-				displayClass = "warning";
-			}
-			
-			html += "<tr>";
-			html += '<td>'+data[i].id+'</td>';
-			html += '<td>'+data[i].model+'</td>';
-			html += '<td>Category '+data[i].category+'</td>';
-			html += '<td>'+parseFloat(data[i].price).toFixed(2)+'</td>';
-			html += '<td>'+data[i].update_time+'</td>';
-			html += '<td class="text-center"><span class="label label-'+displayClass+'">'+titleCase(data[i].display)+'</span></td>';
-			html += '<td class="text-center"><a class="pointer" onclick="supplier.editProduct('+data[i].id+')"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a></td>';
-			html += "</tr>";
-		}
-		$("#listingTable").append(html);
-		$('#dataTables-example').DataTable({
-	        responsive: true
-	    });
-	});
+    $('#orderEditBtn').click(function(){
+    	//console.log($( "#productEditForm" ).serialize());
+    	var orderStatus = $("#orderStatus").val();
+    	var orderID = $("#orderID").text();
+    	
+    	$.post( "../../AdminServlet", {"mode":"orderEdit", "orderStatus": orderStatus, "orderID": orderID} )
+    	.done(function(data){
+    		//console.log(data);
+    		if(data){
+    			$("#editSuccessAlert").show();
+    			supplier.backToListing();
+    			setTimeout(function(){
+    				$("#editSuccessAlert").hide();
+				}, 3000);
+    		}
+    	});
+    });
     
-    $.get('../../AdminServlet', {
-        mode : 'getOrderListing'
-	}, function(responseText) {
+    
+    
+    var pageName = location.pathname.substring(location.pathname.lastIndexOf("/") + 1);
+    if(pageName == "index.html"){
+    	$.get('../../AdminServlet', {
+            mode : 'getOrderListing'
+    	}, function(responseText) {
 
-		var data = responseText.Datasets;	
-		var html = '';
-		for(var i=0; i<data.length;i++){
-			
-			html += "<tr>";
-			html += '<td>'+(i+1)+'</td>';
-			html += '<td>'+data[i].userid+'</td>';
-			html += '<td>'+data[i].model+'</td>';
-			html += '<td>Category '+data[i].category+'</td>';
-			html += '<td>'+parseFloat(data[i].price).toFixed(2)+'</td>';
-			html += '<td>'+data[i].date+'</td>';
-			
-			if(data[i].status=="Ordered"){
-				displayClass = "info"
-			}else if(data[i].status=="Success"){
-				displayClass = "success"
-			}
-			html += '<td class="text-center"><span class="label label-'+displayClass+'">'+data[i].status+'</span></td>';
-			html += '';
-			html += "</tr>";
-		}
-		$("#listingOrderTable").append(html);
-		$('#dataTables-order').DataTable({
-	        responsive: true
-	    });
-	});
-    
+    		var data = responseText.Datasets;	
+    		var html = '';
+    		for(var i=0; i<data.length;i++){
+    			
+    			if(data[i].status=="Ordered"){
+    				displayClass = "info";
+    			}else if(data[i].status=="Deliver"){
+    				displayClass = "primary";
+    			}
+    			else if(data[i].status=="Collect"){
+    				displayClass = "success";
+    			}
+    			else if(data[i].status=="Cancel"){
+    				displayClass = "default";
+    			}
+    			else if(data[i].status=="Reject"){
+    				displayClass = "danger";
+    			}
+    			
+    			html += "<tr>";
+    			html += '<td>'+(i+1)+'</td>';
+    			html += '<td>'+data[i].userid+'</td>';
+    			html += '<td>'+data[i].model+'</td>';
+    			html += '<td>Category '+data[i].category+'</td>';
+    			html += '<td>'+parseFloat(data[i].price).toFixed(2)+'</td>';
+    			html += '<td>'+data[i].date+'</td>';
+    			html += '<td class="text-center"><span class="label label-'+displayClass+'">'+data[i].status+'</span></td>';
+    			html += '<td class="text-center"><a class="pointer" onclick="supplier.editOrder('+data[i].id+')"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a></td>';
+    			html += "</tr>";
+    		}
+    		$("#listingOrderTable").append(html);
+    		$('#dataTables-order').DataTable({
+    	        responsive: true
+    	    });
+    	});
+    }else{
+    	$.get('../../AdminServlet', {
+            mode : 'getAllProductListing'
+    	}, function(responseText) {
+    		var data = responseText.Datasets;	
+    		var html = '';
+    		for(var i=0; i<data.length;i++){
+    			var displayClass = '';
+    			if(data[i].display=='public'){
+    				displayClass = "success";
+    			}else{
+    				displayClass = "warning";
+    			}
+    			
+    			var featured = '';
+    			if(data[i].featured=='on'){
+    				featured = '<span style="color:green">Yes<span>';
+    			}else{
+    				featured = '<span style="color:red">No<span>';
+    			}
+    			
+    			html += "<tr>";
+    			html += '<td>'+data[i].id+'</td>';
+    			html += '<td>'+data[i].model+'</td>';
+    			html += '<td>Category '+data[i].category+'</td>';
+    			html += '<td>'+parseFloat(data[i].price).toFixed(2)+'</td>';
+    			html += '<td>'+data[i].update_time+'</td>';
+    			html += '<td>'+featured+'</td>';
+    			html += '<td class="text-center"><span class="label label-'+displayClass+'">'+titleCase(data[i].display)+'</span></td>';
+    			html += '<td class="text-center"><a class="pointer" onclick="supplier.editProduct('+data[i].id+')"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a></td>';
+    			html += "</tr>";
+    		}
+    		$("#listingTable").append(html);
+    		$('#dataTables-example').DataTable({
+    	        responsive: true
+    	    });
+    	});
+    }
+
     function titleCase(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
     
     function checkSession(){
     	$.get('../../LoginServlet', {mode:"checkSession"} , function(responseText) {
-            console.log(responseText);
             if(responseText=="" || responseText=="false"){
             	window.location.href = "../Login.jsp";
             }
@@ -144,8 +183,30 @@ var supplier = {
         $("#productListing").removeClass('hide').addClass('show');*/
     	location.reload();
     },
+    
+    editOrder: function(id){
+    	
+		$.get('../../AdminServlet', {
+            mode : 'getSelectedOrderDetails',
+            id : id,
+    	}, function(responseText) {
+    		
+    		$("#orderID").text(responseText.id);
+    		$("#userID").text(responseText.userid);
+    		$("#orderBrand").text(responseText.brand);
+    		$("#orderPrice").text(responseText.price);
+    		$("#orderModel").text(responseText.model);
+    		$("#orderDate").text(responseText.date);
+    		$("#orderStatus").val(responseText.status);
+    		
+    		
+    	});
+		
+		$("#orderListing").removeClass('show').addClass('hide');
+        $("#orderEdit").removeClass('hide').addClass('show');
+    }
+    	
 };
-
 
 //Flot Pie Chart
 /*$(function() {

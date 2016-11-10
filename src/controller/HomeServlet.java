@@ -81,11 +81,9 @@ public class HomeServlet extends HttpServlet {
     
     public String getFirstImage(String imagesUrl, String model){
     	String html = "";
-    	System.out.println(imagesUrl);
     	if(imagesUrl!=null){
     		String images[] = imagesUrl.split(",");
-        	String active = "";
-        	html += "<div class='item productListingImage "+active+"'><img src='"+images[0]+"' alt='"+model+"'></div>";
+        	html += "<div class='item productListingImage'><img src='"+images[0]+"' alt='"+model+"'></div>";
     	}
     	return html;
     }

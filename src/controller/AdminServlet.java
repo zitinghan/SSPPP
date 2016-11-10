@@ -51,8 +51,11 @@ public class AdminServlet extends HttpServlet {
 			con = db.getConnection();
 			
 			if(mode.equals("getAllProductListing")){
+				String userbrand = null;
+				if(request.getParameterMap().containsKey("userbrand")){
+					userbrand = (String) session.getAttribute("userbrand");
+				}
 				
-				String userbrand = (String) session.getAttribute("userbrand");
 				String sqlStr = "";
 				
 				ResultSet rs;
@@ -171,6 +174,41 @@ public class AdminServlet extends HttpServlet {
 		        response.getWriter().write(json.toString());
 			
 			}
+			else if(mode.equals("getSelectedOrderDetails")){
+			
+				String id = request.getParameter("id").trim();
+				dataSet = new JSONObject();
+				
+				String sqlStr = "";
+				
+				sqlStr += "SELECT `order`.id, `order`.userid, `order`.price, product.model, product.category,`order`.status, `order`.date, product.brand, `order`.collected_date";
+				sqlStr += " FROM `order` LEFT JOIN product on `order`.model = product.id";
+				sqlStr += " Where `order`.id = ?";
+				
+			    PreparedStatement pstmt = con.prepareStatement(sqlStr);
+			    pstmt.setString(1,id);
+				ResultSet rs = pstmt.executeQuery();
+				
+				while(rs.next()){
+					dataSet.put("id", rs.getString("id"));
+					dataSet.put("userid", rs.getString("userid"));
+					dataSet.put("price", rs.getString("price"));
+					dataSet.put("model", rs.getString("model"));
+					dataSet.put("category", rs.getString("category"));
+					dataSet.put("status", rs.getString("status"));
+					dataSet.put("date", rs.getString("date"));
+					dataSet.put("brand", rs.getString("brand"));
+					//dataSet.put("collected_date", rs.getString("collected_date"));
+		        }
+				
+				// Clean-up environment
+		         rs.close();
+		         pstmt.close();
+		         con.close();
+
+		        response.setContentType("application/json");
+		        response.getWriter().write(dataSet.toString());
+			}
 			
 			
 		} catch (Exception e) {
@@ -199,14 +237,33 @@ public class AdminServlet extends HttpServlet {
 		      {
 		        String key = (String) i.next();
 		        String value = ((String[]) params.get( key ))[ 0 ];
-		        System.out.println(key +' '+ value);
+		        //System.out.println(key +' '+ value);
 		      }
 			
 			//System.out.println(params);
 			
 			String mode = request.getParameter("mode").trim();
 			//System.out.println(mode);
-			if(mode.equals("edit")){
+			if(mode.equals("orderEdit")){
+				String orderID = request.getParameter("orderID").trim();
+				String orderStatus = request.getParameter("orderStatus").trim();
+				
+				String sqlStr;
+				if(orderStatus.equals("Collect") || orderStatus.equals("Deliver")){
+					sqlStr = "UPDATE `order` SET status=?, collected_date=current_timestamp, update_time=current_timestamp where id=?";
+				}else{
+					sqlStr = "UPDATE `order` SET status=?, update_time=current_timestamp where id=?";
+				}
+
+			    PreparedStatement pstmt = con.prepareStatement(sqlStr);
+			    
+			    pstmt.setString(1,orderStatus);
+				pstmt.setString(2,orderID);
+
+				pstmt.executeUpdate();
+				response.getWriter().println(true);
+			}
+			else if(mode.equals("edit")){
 				String productID = request.getParameter("productID").trim();
 				//check edit or new 
 				if(productID==""){ //new product
@@ -227,7 +284,6 @@ public class AdminServlet extends HttpServlet {
 					int cnt = 0;
 					String longImage = "";
 					for(String value : imageUrl) {
-						System.out.println(value);
 						if(value!=null || value!=""){
 							if(cnt==0){
 								longImage += value;
@@ -296,6 +352,7 @@ public class AdminServlet extends HttpServlet {
 					//ResultSet rs = pstmt.executeQuery();
 					int idx = pstmt.executeUpdate();
 					//System.out.println(idx);
+					response.getWriter().println(true);
 				}
 				else{
 					
@@ -307,6 +364,7 @@ public class AdminServlet extends HttpServlet {
 					String price = request.getParameter("price").trim();
 					String product_desc = request.getParameter("product_desc").trim();
 					String[] imageUrl = request.getParameterValues("imageUrl");
+					
 					String display = request.getParameter("display").trim();
 					String others_desc = request.getParameter("others_desc").trim();
 					String featured = null;
@@ -317,7 +375,7 @@ public class AdminServlet extends HttpServlet {
 					int cnt = 0;
 					String longImage = "";
 					for(String value : imageUrl) {
-						if(value!=null){
+						if(value!=null || value!=""){
 							if(cnt==0){
 								longImage += value;
 							}else{
@@ -368,7 +426,6 @@ public class AdminServlet extends HttpServlet {
 					specs.put("specs_weightbattery", weightbattery);
 					specs.put("specs_supplier", supplier);
 					
-					System.out.println(featured);
 					
 					String sqlStr = "UPDATE product SET model=?, brand=?, category=?, price=?, product_desc=?, imageUrl=?, display=?, specs=?, others_desc=?, featured=?, update_time=current_timestamp where id=?";
 				    PreparedStatement pstmt = con.prepareStatement(sqlStr);
@@ -393,7 +450,7 @@ public class AdminServlet extends HttpServlet {
 				
 			}
 			
-			response.getWriter().println(true);;
+			response.getWriter().println(true);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -83,7 +83,7 @@
 	                %>
 
                     <div class="col-sm-4 col-lg-4 col-md-4">
-                        <div class="thumbnail">
+                        <div class="thumbnail pupularItemCarousel">
                             <%=homeClass.getFirstImage(rs.getString("imageUrl"), model) %>
                             <div class="caption">
                                 <h4 class="pull-right">S$<%=price %></h4>

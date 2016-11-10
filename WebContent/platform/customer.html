@@ -58,7 +58,7 @@
                         <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
+                        <li><a id="logoutCustomer"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
                     </ul>
                     <!-- /.dropdown-user -->
                 </li>
@@ -108,41 +108,6 @@
                                                 </tr>
                                             </thead>
                                             <tbody id="customerOrderList">
-                                            
-                                            	
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td><a class="pointer" onclick="customer.checkOrder('0011241')">0011241</a></td>
-                                                    <td>iPad Mini 4 32GB Wifi</td>
-                                                    <td>Apple</td>
-                                                    <th>S$537.14</th>
-                                                    <td>12/10/2016</td>
-                                                    <td>12/10/2016</td>
-                                                    <td><span class="label label-success">Success</span></td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td><a class="pointer" onclick="customer.checkOrder('0011243')">0011243</a></td>
-                                                    <td>G501</td>
-                                                    <td>ASUS</td>
-                                                    <th>S$1,770.85</th>
-                                                    <td>07/10/2016</td>
-                                                    <td>-</td>
-                                                    <td><span class="label label-warning">Pending</span></td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td>3</td>
-                                                    <td><a class="pointer" onclick="customer.checkOrder('0011252')">0011252</a></td>
-                                                    <td>G501</td>
-                                                    <td>ASUS</td>
-                                                    <th>S$1,770.85</th>
-                                                    <td>07/10/2016</td>
-                                                    <td>-</td>
-                                                    <td><span class="label label-danger">Cancel</span></td>
-                                                </tr>
-                                                
                                             </tbody>
                                         </table>
                                     </div>
@@ -208,7 +173,7 @@
                                                 </tr>
 
                                             </table>
-                                            <div class="text-right"><button type="submit" class="btn btn-primary">Save</button></div>
+                                            <div class="text-right"><button class="btn btn-default" type="button" id="reviewEditBtn">Save <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span></button></div>
                                         </div>
                                         
                                     </div>

@@ -39,13 +39,19 @@ body {
 	height:60px;
 }
 
+#main .pupularItemCarousel .item{
+	height: 250px;
+    line-height: 250px;
+}
+
 #main .pupularItemCarousel img{
-	height:300px;
+	
 	width:100%;
 }
 
 .productListingImage img{
 	width:100%;
+	height:300px;
 }
 
 #main .slide-image {
@@ -58,6 +64,10 @@ body {
 /* product Page */
 .productCaption{
 	padding:10px;
+}
+
+.caption{
+	height:200px;
 }
 
 /*product info page*/

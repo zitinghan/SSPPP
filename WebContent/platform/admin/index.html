@@ -101,7 +101,7 @@
                                         Product Selling History
                                     </div>
                                     <!-- /.panel-heading -->
-                                    <div class="panel-body">
+                                    <div class="panel-body" id="orderListing">
                                         <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-order">
                                             <thead>
                                                 <tr>
@@ -114,6 +114,7 @@
                                                     <th>Price S$</th>
                                                     <th>Date of Purchase</th>
                                                     <th>Status</th>
+                                                    <th>Action</th>
                                                     <!-- <th>Comment</th> -->
                                                 </tr>
                                             </thead>
@@ -166,6 +167,50 @@
                                         </table>
                                     </div>
                                     <!-- /.panel-body -->
+                                    
+                                    <div class="panel-body hide" id="orderEdit">
+                                    	<table class="table table-striped table-bordered table-hover">
+                                    		<tr>
+                                    			<td>Order ID</td>
+                                    			<td id="orderID"></td>
+                                    		</tr>
+                                    		<tr>
+                                    			<td>User ID</td>
+                                    			<td id="userID"></td>
+                                    		</tr>
+                                    		<tr>
+                                    			<td>Brand</td>
+                                    			<td id="orderBrand"></td>
+                                    		</tr>
+                                    		<tr>
+                                    			<td>Model</td>
+                                    			<td id="orderModel"></td>
+                                    		</tr>
+                                    		<tr>
+                                    			<td>Price</td>
+                                    			<td id="orderPrice"></td>
+                                    		</tr>
+                                    		<tr>
+                                    			<td>Order Date</td>
+                                    			<td id="orderDate"></td>
+                                    		</tr>
+                                    		<tr>
+                                    			<td>Status</td>
+                                    			<td>
+                                    				<select class="form-control" id="orderStatus">
+													  <option value="Ordered">Ordered</option>
+													  <option value="Deliver">Deliver</option>
+													  <option value="Collect">Collect</option>
+													  <option value="Cancel">Cancel</option>
+													  <option value="Reject">Reject</option>
+													</select>
+                                    			</td>
+                                    		</tr>
+                                    		<tr>
+                                    			<td colspan="2" class="text-right"><button class="btn btn-default" type="button" id="orderEditBtn">Save <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span></button></td>
+                                    		</tr>
+                                    	</table>
+                                    </div>
                                 </div>
                                 <!-- /.panel -->
                             </div>
@@ -218,6 +263,7 @@
 
     </div>
     <!-- /#wrapper -->
+    
 
     <!-- jQuery -->
     <script src="../../vendor/jquery/jquery.min.js"></script>
