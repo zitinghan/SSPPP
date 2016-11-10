@@ -218,13 +218,17 @@ public class AdminServlet extends HttpServlet {
 					String[] imageUrl = request.getParameterValues("imageUrl");
 					String display = request.getParameter("display").trim();
 					String others_desc = request.getParameter("others_desc").trim();
-					String featured = request.getParameter("featured").trim();
+					String featured = null;
+					if (request.getParameterMap().containsKey("featured")) {
+						featured = request.getParameter("featured").trim();
+			        }
 					
 					// get multiple image
 					int cnt = 0;
 					String longImage = "";
 					for(String value : imageUrl) {
-						if(value==null){
+						System.out.println(value);
+						if(value!=null || value!=""){
 							if(cnt==0){
 								longImage += value;
 							}else{
@@ -232,7 +236,6 @@ public class AdminServlet extends HttpServlet {
 							}
 							cnt++;
 						}
-						
 				    }
 					
 					// specs detials
@@ -306,17 +309,23 @@ public class AdminServlet extends HttpServlet {
 					String[] imageUrl = request.getParameterValues("imageUrl");
 					String display = request.getParameter("display").trim();
 					String others_desc = request.getParameter("others_desc").trim();
-					String featured = request.getParameter("featured").trim();
+					String featured = null;
+					if (request.getParameterMap().containsKey("featured")) {
+						featured = request.getParameter("featured").trim();
+			        }
 					
 					int cnt = 0;
 					String longImage = "";
 					for(String value : imageUrl) {
-						if(cnt==0){
-							longImage += value;
-						}else{
-							longImage += ","+value;
+						if(value!=null){
+							if(cnt==0){
+								longImage += value;
+							}else{
+								longImage += ","+value;
+							}
+							cnt++;
 						}
-						cnt++;
+						
 				    }
 					//System.out.println(longImage);
 					

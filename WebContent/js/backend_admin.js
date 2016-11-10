@@ -6,6 +6,7 @@ $(document).ready(function() {
 	$("#editSuccessAlert").hide();
 	
     $('#productEditBtn').click(function(){
+    	console.log($( "#productEditForm" ).serialize());
     	$.post( "../../AdminServlet", $( "#productEditForm" ).serialize() )
     	.done(function(data){
     		console.log(data);
