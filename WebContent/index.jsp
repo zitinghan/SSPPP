@@ -104,7 +104,7 @@
 	                        <div id="popularItem1" class="carousel slide pupularItemCarousel" data-ride="carousel">
 	                          <!-- Wrapper for slides -->
 	                          <div class="carousel-inner" role="listbox">
-	                            <%=homeClass.getImage(rs.getString("imageUrl"), model) %>
+	                            <%=homeClass.getImage(rs.getString("imageUrl"), model, id) %>
 	                          </div>
 	                        </div>
 	                        <div class="caption">
@@ -116,14 +116,7 @@
 	                            </p>
 	                        </div>
 	                        <div class="ratings">
-	                            <p class="pull-right">15 reviews</p>
-	                            <p>
-	                                <span class="glyphicon glyphicon-star"></span>
-	                                <span class="glyphicon glyphicon-star"></span>
-	                                <span class="glyphicon glyphicon-star"></span>
-	                                <span class="glyphicon glyphicon-star"></span>
-	                                <span class="glyphicon glyphicon-star"></span>
-	                            </p>
+	                        	<%=homeClass.getReview(id, false, false) %>
 	                        </div>
 	                    </div>
 	                </div>

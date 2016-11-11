@@ -56,7 +56,8 @@
 		            	DB db = new DB();
 		            	con = db.getConnection();
 		            	
-		            	String id = request.getParameter("id");
+		            	String stringId = request.getParameter("id");
+		            	int id = Integer.parseInt(stringId);
 		            	String sqlStr = "select * from product where id = '"+id+"'";
 		            	
 		    			PreparedStatement pstmt = con.prepareStatement(sqlStr);
@@ -101,17 +102,9 @@
                         <p>
                             <%=desc %>
                         </p>
-                    
+                    	
                         <div class="ratings">
-                            <p class="pull-right">25 reviews</p>
-                            <p>
-                                <span class="glyphicon glyphicon-star"></span>
-                                <span class="glyphicon glyphicon-star"></span>
-                                <span class="glyphicon glyphicon-star"></span>
-                                <span class="glyphicon glyphicon-star"></span>
-                                <span class="glyphicon glyphicon-star"></span>
-                                5 stars
-                            </p>
+                            <%=homeClass.getReview(id, true, false) %>
                         </div>
                     </div>
 
@@ -200,55 +193,56 @@
                           </div>
                         </div>
                       </div>
+                      
                       <div class="panel panel-default">
                         <div class="panel-heading" role="tab" id="headingTwo">
                           <h4 class="panel-title">
                             <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                              Model Upgrade Options
+                              Review
                             </a>
                           </h4>
                         </div>
                         <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                           <div class="panel-body">
-                            <!-- <table class="table table-hover">
-                                <tr>
-                                    <td>iPad Mini 4 Wi-Fi 128GB</td>
-                                    <td>+ S$136.96</td>
-                                </tr>
-                                <tr>
-                                    <td>iPad Mini 4 Wi-Fi+Cellular 32GB</td>
-                                    <td>+ S$169.06</td>
-                                </tr>
-                                <tr>
-                                    <td>iPad Mini 4 Wi-Fi+Cellular 128GB</td>
-                                    <td>+ S$318.86</td>
-                                </tr>
-                                <tr>
-                                    <td>AppleCare Protection Plan</td>
-                                    <td>+ S$96.30</td>
-                                </tr>
-                            </table> -->
-                            <%=homeClass.getOthersDesc(others_desc) %>
+                            <%=homeClass.getReview(id, false, true) %>
                           </div>
                         </div>
                       </div>
+                      
                       <div class="panel panel-default">
                         <div class="panel-heading" role="tab" id="headingThree">
                           <h4 class="panel-title">
                             <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                              Disclaimer
+                              Others Info
                             </a>
                           </h4>
                         </div>
                         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
                           <div class="panel-body">
-                            <div>Note: All unit prices below are inclusive of 7% GST.</div><br/>
+                            <%=homeClass.getOthersDesc(others_desc) %>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingFour">
+                          <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                              Disclaimer
+                            </a>
+                          </h4>
+                        </div>
+                        <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+                          <div class="panel-body">
+                          	<div>Note: All unit prices below are inclusive of 7% GST.</div><br/>
                             <div>
                                 While all efforts are made to check pricing and other errors, inadvertent errors do occur from time to time, NTU and respective supplier reserve the right to decline orders arising from such errors.
                             </div>
                           </div>
                         </div>
                       </div>
+                      
+                      
                     </div>
 
 

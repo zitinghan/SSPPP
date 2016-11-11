@@ -47,7 +47,7 @@ public class HomeServlet extends HttpServlet {
     
     
     
-    public String getImage(String imagesUrl, String model){
+    public String getImage(String imagesUrl, String model, int id){
     	String html = "";
     	String images[] = imagesUrl.split(",");
     	String active = "";
@@ -57,7 +57,7 @@ public class HomeServlet extends HttpServlet {
     		}else{
     			active = "";
     		}
-            html += "<div class='item "+active+"'><img src='"+images[i]+"' alt='"+model+"'></div>";
+            html += "<div class='item "+active+"'><a href='product_info.jsp?id="+id+"'><img src='"+images[i]+"' alt='"+model+"'></a></div>";
         }
     	
     	return html;
@@ -79,11 +79,11 @@ public class HomeServlet extends HttpServlet {
     	return html;
     }
     
-    public String getFirstImage(String imagesUrl, String model){
+    public String getFirstImage(String imagesUrl, String model, int id){
     	String html = "";
     	if(imagesUrl!=null){
     		String images[] = imagesUrl.split(",");
-        	html += "<div class='item productListingImage'><img src='"+images[0]+"' alt='"+model+"'></div>";
+        	html += "<div class='item productListingImage'><a href='product_info.jsp?id="+id+"'><img src='"+images[0]+"' alt='"+model+"'></a></div>";
     	}
     	return html;
     }
@@ -95,6 +95,116 @@ public class HomeServlet extends HttpServlet {
     		html += "<div class='item'>"+desc[i]+"</div>";
     	}
     	return html;
+    }
+    
+    public String getReview(int id, Boolean onlyRating, Boolean onlyReview){
+    	String html = "";
+    	
+    	Connection con;
+		DB db;
+		
+		try{
+			db = new DB();
+			con = db.getConnection();
+			ResultSet rs;
+			PreparedStatement pstmt;
+			
+			String sqlStr1;
+			sqlStr1= "select ROUND(AVG(review_rating)) as avg_review_rating, count(review_rating) as total_rating from `order` where model = ? and review_rating!='Null'";
+			pstmt = con.prepareStatement(sqlStr1);
+			pstmt.setInt(1,id);
+			rs = pstmt.executeQuery();
+			int avg_review_rating = 0;
+			int total_rating = 0;
+			
+			while(rs.next()){
+				avg_review_rating = rs.getInt("avg_review_rating");
+				total_rating = rs.getInt("total_rating");
+	        }
+			
+			// Clean-up environment
+	         rs.close();
+	         pstmt.close();
+	         
+	         
+	         if(onlyRating==false && onlyReview==false){
+	        	 if(total_rating == 1){
+	            	 html += "<p class='pull-right'>"+total_rating+" Review</p>";
+	             }else if(total_rating > 1){
+	            	 html += "<p class='pull-right'>"+total_rating+" Reviews</p>";
+	             }else{
+	            	 html += "<p class='text-right'>No Review</p>";
+	             }
+		         
+	             if(avg_review_rating>0){
+	            	 html += "<p>";
+	            	 html += getStarHtml(avg_review_rating);
+	    	         html += "</p>";
+	             }
+	         }else if(onlyRating==true && onlyReview==false){
+	        	 if(avg_review_rating>0){
+	               	 html += "<p class='text-right'>";
+        	         html += getStarHtml(avg_review_rating);
+        	         html += "</p>";
+	              }
+	        	 
+	         }else if(onlyRating==false && onlyReview==true){
+	        	 
+	        	String sqlStr= "select * from `order` where model = ? and review_rating!='Null'";
+	 			pstmt = con.prepareStatement(sqlStr);
+	 			pstmt.setInt(1,id);
+	 			rs = pstmt.executeQuery();
+	 			
+	 			while(rs.next()){
+					String userid = rs.getString("userid");
+					int rating = rs.getInt("review_rating");
+					String review = rs.getString("review_desc");
+					
+					
+					html += "<div class='media'>";
+		        	html += "<div class='media-left'>";
+		        	html += "<img class='media-object reviewImg' src='images/blue-user-icon.png' alt='user icon'>";
+		        	html += "</div>";
+		        	html += "<div class='media-body'>";
+		        	html += "<h4 class='media-heading'>"+userid+"</h4>" + getStarHtml(rating);;
+		        	html += "<div>"+review+"</div>";
+		        	html += "</div>";
+		        	html += "</div>";
+		        }
+				
+				// Clean-up environment
+		         rs.close();
+		         pstmt.close();
+	        	 
+	        	 
+	         }
+	         
+	         
+             
+	         con.close();
+	         
+		}catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+		}
+		return html;
+    }
+    
+    public String getStarHtml(int avg_review_rating){
+    	String html = "";
+    	
+        for(int i=0;i<avg_review_rating;i++){
+        	html += "<span class='glyphicon glyphicon-star'></span>";
+        }
+         
+        int emptyStar = 5-avg_review_rating;
+        for(int j=0;j<emptyStar;j++){
+        	html += "<span class='glyphicon glyphicon-star-empty'></span>";
+        }
+	        
+    	
+		return html;
     }
     
     public String getDate(int dayAfter){

@@ -45,7 +45,7 @@ body {
 }
 
 #main .pupularItemCarousel img{
-	
+	max-height:250px;
 	width:100%;
 }
 
@@ -67,14 +67,18 @@ body {
 }
 
 .caption{
-	height:200px;
+	height:180px;
 }
 
 /*product info page*/
 .carousel-inner{
-	height:400px
+	h1eight:400px
 }
 .productInfoCarousel .slide-image{
 	margin:auto;
 	height:400px;
+}
+
+.reviewImg{
+	width:65px
 }

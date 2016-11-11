@@ -45,7 +45,7 @@
                   <button class="btn btn-primary btn-lg btn-block" id="submitLogin">Sign In</button>
                   <br/>
                   <!-- <span class="pull-right"><a href="#">Forget Password</a></span> -->
-                  <div id="checkSession">check session</div>
+                  <!-- <div id="checkSession">check session</div> -->
                 </div>
   
           </div>

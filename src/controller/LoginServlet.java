@@ -63,10 +63,14 @@ public class LoginServlet extends HttpServlet{
 			  	  }*/
 			  	  
 			  	if(session.getAttribute("username") != null){
+			  		if(session.getAttribute("userbrand") != null){
+			  			response.getWriter().write("supplier");
+			  		}
 			  		response.getWriter().write("true");
 			  	}else{
 			  		response.getWriter().write("false");
 			  	}
+			  	
 			}else{
 				String userName = request.getParameter("userName").trim();
 				String password = request.getParameter("password").trim();
@@ -101,9 +105,9 @@ public class LoginServlet extends HttpServlet{
 
 				      if(x!=4){
 				         session.setAttribute("username", userName);
-				         session.setAttribute("userbrand", rs.getString(4));
+				         session.setAttribute("userbrand", rs.getString("Brand"));
 				         //System.out.println("username"+userName);
-				         //System.out.println(rs.getString(4));
+				         //System.out.println(rs.getString("Brand"));
 				      }
 				 }
 				

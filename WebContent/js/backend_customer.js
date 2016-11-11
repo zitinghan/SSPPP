@@ -57,12 +57,13 @@ var customer = {
 			$("#orderDetails_comment").val(rating_desc);
 		}
 		
+		console.log(status);
 		if(status=="Deliver" || status=="Collect"){
-			$("#orderDetails_rating").prop("disabled", true);
-			$("#orderDetails_comment").prop("disabled", true);
-		}else{
 			$("#orderDetails_rating").prop("disabled", false);
 			$("#orderDetails_comment").prop("disabled", false);
+		}else{
+			$("#orderDetails_rating").prop("disabled", true);
+			$("#orderDetails_comment").prop("disabled", true);
 		}
 
 	},

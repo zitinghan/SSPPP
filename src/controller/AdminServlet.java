@@ -52,15 +52,12 @@ public class AdminServlet extends HttpServlet {
 			
 			if(mode.equals("getAllProductListing")){
 				String userbrand = null;
-				if(request.getParameterMap().containsKey("userbrand")){
-					userbrand = (String) session.getAttribute("userbrand");
-				}
-				
+				userbrand = (String) session.getAttribute("userbrand");
 				String sqlStr = "";
 				
 				ResultSet rs;
 				PreparedStatement pstmt;
-				
+
 				if(userbrand != null){
 					sqlStr = "select * from product where brand=?";
 					pstmt = con.prepareStatement(sqlStr);
@@ -208,6 +205,86 @@ public class AdminServlet extends HttpServlet {
 
 		        response.setContentType("application/json");
 		        response.getWriter().write(dataSet.toString());
+			}
+			else if(mode.equals("getTotalSellProductByBrand")){
+				
+				String userbrand = (String) session.getAttribute("userbrand");
+				String sqlStr = "";
+				
+				ResultSet rs;
+				PreparedStatement pstmt;
+				
+				if(userbrand != null){
+					sqlStr += "SELECT product.brand, count(product.brand) as total_brand FROM `order` LEFT JOIN product on `order`.model = product.id ";
+					sqlStr += "where `order`.status in ('Collect', 'Deliver') AND product.brand =?";
+					sqlStr += "Group By product.brand";
+					pstmt = con.prepareStatement(sqlStr);
+				    pstmt.setString(1,userbrand);
+				    rs = pstmt.executeQuery();
+				}else{
+					sqlStr += "SELECT product.brand, count(product.brand) as total_brand FROM `order` LEFT JOIN product on `order`.model = product.id ";
+					sqlStr += "where `order`.status in ('Collect', 'Deliver')";
+					sqlStr += "Group By product.brand";
+							
+					pstmt = con.prepareStatement(sqlStr);
+					rs = pstmt.executeQuery();
+				}
+
+				while(rs.next()){
+					dataSet = new JSONObject();
+					dataSet.put("label", rs.getString("brand"));
+					dataSet.put("data", rs.getString("total_brand"));
+					dataSets.put(dataSet);
+		        }
+				json.put("Datasets", dataSets);
+				
+				// Clean-up environment
+		         rs.close();
+		         pstmt.close();
+		         con.close();
+
+		        response.setContentType("application/json");
+		        response.getWriter().write(json.toString());
+			}
+			else if(mode.equals("getTotalSellProductByProduct")){
+				
+				String userbrand = (String) session.getAttribute("userbrand");
+				String sqlStr = "";
+				
+				ResultSet rs;
+				PreparedStatement pstmt;
+				
+				if(userbrand != null){
+					sqlStr += "SELECT product.model,count(product.model) as total_model FROM `order` LEFT JOIN product on `order`.model = product.id ";
+					sqlStr += "where `order`.status in ('Collect', 'Deliver') AND product.brand =?";
+					sqlStr += "Group By product.model";
+					pstmt = con.prepareStatement(sqlStr);
+				    pstmt.setString(1,userbrand);
+				    rs = pstmt.executeQuery();
+				}else{
+					sqlStr += "SELECT product.model,count(product.model) as total_model FROM `order` LEFT JOIN product on `order`.model = product.id ";
+					sqlStr += "where `order`.status in ('Collect', 'Deliver') ";
+					sqlStr += "Group By product.model";
+							
+					pstmt = con.prepareStatement(sqlStr);
+					rs = pstmt.executeQuery();
+				}
+
+				while(rs.next()){
+					dataSet = new JSONObject();
+					dataSet.put("label", rs.getString("model"));
+					dataSet.put("data", rs.getString("total_model"));
+					dataSets.put(dataSet);
+		        }
+				json.put("Datasets", dataSets);
+				
+				// Clean-up environment
+		         rs.close();
+		         pstmt.close();
+		         con.close();
+
+		        response.setContentType("application/json");
+		        response.getWriter().write(json.toString());
 			}
 			
 			
